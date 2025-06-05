@@ -1,0 +1,10 @@
+Settings:
+  Lang: English
+  prefix: "&f[ &eDP-AfkShop &f] "
+  timeSchedule: -1
+  pointPerTime: 0
+  world-limit:
+    world:
+    - afk
+    dim-1:
+    - afk

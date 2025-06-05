@@ -1,0 +1,80 @@
+Lang: English
+
+#Commands - Afkshop
+
+cmd_create: "/dpafkshop create [name] §7- Creates an AFK shop."
+cmd_open: "/dpafkshop open [name] §7- Opens the AFK shop."
+cmd_delete: "/dpafkshop delete [name] §7- Deletes the AFK shop."
+cmd_items: "/dpafkshop items [name] §7- Sets the items in the AFK shop."
+cmd_price: "/dpafkshop price [name] §7- Sets item prices in the AFK shop."
+cmd_page: "/dpafkshop page [name] [page] §7- Sets the maximum pages of the AFK shop. (Default: 0)"
+
+#Commands - Afk
+
+cmd_wglist: "/dpafk wglist §7- Check Afk Region List."
+cmd_setting: "/dpafk setting [time] [point] §7- Sets the interval and amount for AFK point rewards. (Time units: s/m/h)"
+cmd_wgadd: "/dpafk wgadd [worldguard] (world) §7- Specifies a WorldGuard region where AFK points can be earned. (If no world is entered, the player's current world is used by default.)"
+cmd_wgremove: "/dpafk wgremove [worldguard] (world) §7- Removes a WorldGuard region where AFK points can be earned. (If no world is entered, the player's current world is used by default.)"
+cmd_point: "/dpafk point give|take|set [point] (player) | clear (player) §7- Gives, takes, sets, or clears a player's AFK points. (Note: clear does not require a point value.)"
+
+#Commands - Warning
+
+player_only: "This command can only be used by players."
+
+#AfkData
+
+afk_world_wrong: "The specified world does not exist."
+afk_world_exists_not: "This world has not been configured."
+afk_location_exists: "This WorldGuard region is already configured."
+afk_location_add: "Set to earn AFK points in the {1} WorldGuard region of world {0}."
+afk_location_remove: "AFK points are no longer granted in the WorldGuard region {1} of world {0}."
+afk_location_exists_not: "This WorldGuard region is not configured."
+afk_timeFormatException: "Invalid time value."
+afk_pointFormatException: "Invalid point value."
+afk_wrong_set: "You cannot set a value less than 0!"
+afk_set_point_time: "Point gain has been updated to {1} points every {0} seconds."
+afk_see_wg_list: "-=-=-= Afk Region List =-=-=-"
+afk_clear_success: "Player's points have been cleared."
+player_get_point: "You earned {0}P AFK points!"
+player_give_point: "You gave {0}P AFK points!"
+player_set_point: "AFK points have been set to {0}P."
+player_set_point_player: "Set player's AFK points to {0}P."
+player_take_point: "Used {0}P AFK points."
+player_take_point_player: "You took {0}P AFK points from the player."
+player_clear_point: "AFK points have been cleared!"
+
+#Events
+
+afk_no_point: "Not enough AFK points!"
+event_item_buy: "You bought an item."
+event_item_buy_64: "You bought 64 items."
+player_has_no_space: "Not enough space in your inventory!"
+event_shop_price_set: "Enter the price to set. (Example: 1000)"
+
+#Functions
+
+func_pageFormatException: "Invalid page value."
+func_priceFormatException: "Invalid price value."
+func_shop_exists: "The AFK shop already exists!"
+func_shop_not_exists: "The AFK shop does not exist!"
+func_shop_create: "Created AFK shop: {0}!"
+func_shop_delete: "Deleted AFK shop: {0}!"
+func_shop_item_save: "{0} AFK shop items have been saved."
+func_shop_page_set: "{0} AFK shop's page count has been set."
+
+func_shop_open_title: "{0} AFK Shop"
+func_shop_item_title: "{0} AFK Shop Item Settings"
+func_shop_price_title: "{0} AFK Shop Price Settings"
+
+prev_page: "§fPrevious Page"
+next_page: "§fNext Page"
+current_page: "§fCurrent Page: "
+
+#Functions - Item
+
+func_shop_item_lore1: "§a◈ §f§lRequired Points §7: "
+func_shop_item_lore2: "§f--------------------"
+func_shop_item_lore3: "§a▶ §fRight Click §7:§f Buy 1"
+func_shop_item_lore4: "§a▶ §fShift + Right Click §7:§f Buy 64"
+func_shop_price_not_set: "§cNot set."
+func_shop_price_unit: "§f{0} §a§lP"

@@ -1,0 +1,80 @@
+Lang: Korean
+
+#Commands - Afkshop
+
+cmd_create: "/dpafkshop create [name] §7- 잠수 상점을 생성합니다."
+cmd_open: "/dpafkshop open [name] §7- 잠수 상점을 엽니다."
+cmd_delete: "/dpafkshop delete [name] §7- 잠수 상점을 삭제합니다."
+cmd_items: "/dpafkshop items [name] §7- 잠수 상점의 아이템을 설정합니다."
+cmd_price: "/dpafkshop price [name] §7- 잠수 상점의 아이템 가격을 설정합니다."
+cmd_page: "/dpafkshop page [name] [page] - 잠수 상점의 최대 페이지를 설정합니다. (기본값 : 0)"
+
+#Commands - Afk
+
+cmd_wglist: "/dpafk wglist §7- 잠수 구역 목록을 확인합니다."
+cmd_setting: "/dpafk setting [time] [point] §7- 잠수 포인트의 지급 주기와 지급량을 설정합니다. ( time 단위: s/m/h )"
+cmd_wgadd: "/dpafk wgadd [worldguard] (world) §7- 잠수 포인트를 획득 할 수 있는 월드 가드를 지정합니다. ( 월드를 입력하지 않으면 현재 플레이어의 월드를 기본으로 합니다. )"
+cmd_wgremove: "/dpafk wgremove [worldguard] (world) §7- 잠수 포인트를 획득 할 수 있는 월드가드를 제거합니다. ( 월드를 입력하지 않으면 현재 플레이어의 월드를 기본으로 합니다. )"
+cmd_point: "/dpafk point give|take|set [point] (player) | clear (player) §7- 플레이어의 잠수 포인트를 지급, 회수, 설정하거나 초기화합니다. (단, clear는 포인트 값을 사용하지 않음.)"
+
+#Commands - Warning
+
+player_only: "플레이어만 사용 가능한 명령어입니다."
+
+#AfkData
+
+afk_world_wrong: "존재하지 않는 월드입니다."
+afk_world_exists_not: "설정되어 있지 않은 월드입니다."
+afk_location_exists: "이미 설정된 월드의 월드가드입니다."
+afk_location_add: "{0} 월드의 {1} 월드가드에서 잠수포인트를 획득하도록 설정했습니다."
+afk_location_remove: "{0} 월드의 {1} 월드가드에서 더이상 잠수포인트를 획득하지 않습니다."
+afk_location_exists_not: "설정되어 있지 않는 월드가드입니다."
+afk_timeFormatException: "시간 값이 잘못되었습니다."
+afk_pointFormatException: "포인트 값이 잘못되었습니다."
+afk_wrong_set: "0보다 작은 수로는 설정할 수 없습니다!"
+afk_clear_success: "플레이어의 포인트를 초기화했습니다."
+afk_set_point_time: "{0}초마다 {1}포인트씩 획득하도록 변경되었습니다."
+afk_see_wg_list: "-=-=-= 잠수 구역 목록 =-=-=-"
+player_get_point: "잠수 포인트 {0}P를 획득했습니다!"
+player_give_point: "잠수 포인트 {0}P를 지급했습니다!"
+player_set_point: "잠수 포인트가 {0}P로 설정되었습니다."
+player_set_point_player: "잠수 포인트를 {0}p로 설정했습니다."
+player_take_point: "잠수 포인트 {0}p가 소모되었습니다."
+player_take_point_player: "잠수 포인트 {0}p를 소모시켰습니다."
+player_clear_point: "잠수 포인트를 초기화했습니다!"
+#Events
+
+afk_no_point: "잠수포인트가 부족합니다!"
+event_item_buy: "아이템을 구매했습니다."
+event_item_buy_64: "아이템을 64개 구매했습니다."
+player_has_no_space: "인벤토리에 공간이 충분하지 않습니다!"
+event_shop_price_set: "설정할 가격을 입력하세요. (예시 : 1000)"
+
+#Functions
+
+func_pageFormatException: "페이지 값이 잘못되었습니다."
+func_priceFormatException: "가격 값이 잘못되었습니다."
+func_shop_exists: "잠수 상점이 이미 존재합니다!"
+func_shop_not_exists: "잠수 상점이 존재하지 않습니다!"
+func_shop_create: "{0} 잠수 상점을 생성했습니다!"
+func_shop_delete: "{0} 잠수 상점을 삭제했습니다!"
+func_shop_item_save: "{0} 잠수 상점 아이템이 저장되었습니다."
+func_shop_page_set: "{0} 잠수 상점의 페이지가 설정되었습니다."
+
+func_shop_open_title: "{0} 잠수 상점"
+func_shop_item_title: "{0} 잠수 상점 아이템 설정"
+func_shop_price_title: "{0} 잠수 상점 가격 설정"
+
+prev_page: "§f이전 페이지"
+next_page: "§f다음 페이지"
+current_page: "§f현재 페이지 : "
+
+#Functions - Item
+
+func_shop_item_lore1: "§a◈ §f§l필요 포인트 §7: "
+func_shop_item_lore2: "§f--------------------"
+func_shop_item_lore3: "§a▶ §f우클릭 §7:§f 1개 구매"
+func_shop_item_lore4: "§a▶ §f쉬프트 + 우클릭 §7:§f 64개 구매"
+func_shop_price_not_set: "§c설정안됨."
+func_shop_price_unit: "§f{0} §a§lP"
+
