@@ -136,7 +136,6 @@ Admins can create AfkShops where players can purchase items using their AFK Poin
 - WorldGuard
 
 <br>
-<br>
 
 ## Commands
 ### Admin Commands
