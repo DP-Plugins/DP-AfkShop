@@ -146,7 +146,7 @@ public class DPASFunction {
             return;
         }
         String title = getLang().getWithArgs("func_shop_item_title", name);
-        DInventory inv = new DInventory(null, title, 54, true, plugin);
+        DInventory inv = new DInventory(title, 54, true, plugin);
         inv.setChannel(0);
         inv.setObj(name);
         YamlConfiguration shop = shops.get(name);
@@ -158,7 +158,7 @@ public class DPASFunction {
         }
         inv.update();
         updateCurrentPage(inv);
-        p.openInventory(inv);
+        p.openInventory(inv.getInventory());
     }
 
     public static void saveShopItems(Player player, String name, DInventory inv) {
@@ -173,8 +173,8 @@ public class DPASFunction {
             p.sendMessage(getPrefix() + getLang().get("func_shop_not_exists"));
             return;
         }
-        String title = name + getLang().get("func_shop_open_title");
-        DInventory inv = new DInventory(null, title, 54, true, plugin);
+        String title = getLang().getWithArgs("func_shop_open_title", name);
+        DInventory inv = new DInventory(title, 54, true, plugin);
         inv.setChannel(1);
         YamlConfiguration shop = shops.get(name);
         Map<Integer, ItemStack[]> items = deserialize(shop);
@@ -191,7 +191,7 @@ public class DPASFunction {
         }
         inv.update();
         updateCurrentPage(inv);
-        p.openInventory(inv);
+        p.openInventory(inv.getInventory());
     }
 
     public static void setPageAfkShop(Player p, String name, String page) {
@@ -234,7 +234,7 @@ public class DPASFunction {
         }
         String title = getLang().getWithArgs("func_shop_price_title", name);
 
-        DInventory inv = new DInventory(null, title, 54, true, plugin);
+        DInventory inv = new DInventory(title, 54, true, plugin);
         inv.setChannel(2);
         inv.setObj(name);
         YamlConfiguration shop = shops.get(name);
@@ -252,7 +252,7 @@ public class DPASFunction {
         }
         inv.update();
         updateCurrentPage(inv);
-        p.openInventory(inv);
+        p.openInventory(inv.getInventory());
     }
 
     public static void openPriceSettingGUI(Player p, String name, ItemStack item2, int slot2, int page2) {
@@ -262,7 +262,7 @@ public class DPASFunction {
         }
         String title = getLang().getWithArgs("func_shop_price_title", name);
 
-        DInventory inv = new DInventory(null, title, 54, true, plugin);
+        DInventory inv = new DInventory(title, 54, true, plugin);
         inv.setChannel(2);
         inv.setObj(name);
         YamlConfiguration shop = shops.get(name);
@@ -283,7 +283,7 @@ public class DPASFunction {
         }
         inv.update();
         updateCurrentPage(inv);
-        p.openInventory(inv);
+        p.openInventory(inv.getInventory());
     }
 
 

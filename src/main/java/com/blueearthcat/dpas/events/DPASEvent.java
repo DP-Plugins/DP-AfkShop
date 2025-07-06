@@ -36,35 +36,34 @@ public class DPASEvent implements Listener {
         AfkShop.afkTime.remove(e.getPlayer().getUniqueId());
         AfkShop.afkTotalTime.remove(e.getPlayer().getUniqueId());
     }
-
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e) {
         Player p = (Player) e.getWhoClicked();
-        if (!(e.getInventory() instanceof DInventory)) return;
-        DInventory inv = (DInventory) e.getInventory();
+        if (!(e.getInventory().getHolder() instanceof DInventory)) return;
+        DInventory inv = (DInventory) e.getInventory().getHolder();
         if (!inv.isValidHandler(plugin)) return;
         if (e.getCurrentItem() == null) return;
         ItemStack item = e.getCurrentItem();
+        if (NBT.hasTagKey(e.getCurrentItem(), "prev")) {
+            e.setCancelled(true);
+            ItemStack[] currentPageItems = inv.getContents();
+            inv.setPageContent(inv.getCurrentPage(), currentPageItems);
+            inv.prevPage();
+            DPASFunction.updateCurrentPage(inv);
+            return;
+        }
+        if (NBT.hasTagKey(e.getCurrentItem(), "next")) {
+            e.setCancelled(true);
+            ItemStack[] currentPageItems = inv.getContents();
+            inv.setPageContent(inv.getCurrentPage(), currentPageItems);
+            inv.nextPage();
+            DPASFunction.updateCurrentPage(inv);
+            return;
+        }
         if (inv.getChannel() == 0) { //item Setting GUI
             if (e.getCurrentItem() == null) return;
             if (NBT.hasTagKey(e.getCurrentItem(), "current") || NBT.hasTagKey(e.getCurrentItem(), "pane")) {
                 e.setCancelled(true);
-                return;
-            }
-            if (NBT.hasTagKey(e.getCurrentItem(), "prev")) {
-                e.setCancelled(true);
-                ItemStack[] currentPageItems = inv.getContents();
-                inv.setPageContent(inv.getCurrentPage(), currentPageItems);
-                inv.prevPage();
-                DPASFunction.updateCurrentPage(inv);
-                return;
-            }
-            if (NBT.hasTagKey(e.getCurrentItem(), "next")) {
-                e.setCancelled(true);
-                ItemStack[] currentPageItems = inv.getContents();
-                inv.setPageContent(inv.getCurrentPage(), currentPageItems);
-                inv.nextPage();
-                DPASFunction.updateCurrentPage(inv);
                 return;
             }
             return;
@@ -116,8 +115,8 @@ public class DPASEvent implements Listener {
 
     @EventHandler
     public void onInventoryClose(InventoryCloseEvent e) {
-        if (!(e.getInventory() instanceof DInventory)) return;
-        DInventory inv = (DInventory) e.getInventory();
+        if (!(e.getInventory().getHolder() instanceof DInventory)) return;
+        DInventory inv = (DInventory) e.getInventory().getHolder();
         if (!inv.isValidHandler(plugin)) return;
         if (inv.getChannel() == 0) {// item edit mode save
             ItemStack[] currentPageItems = inv.getContents();
