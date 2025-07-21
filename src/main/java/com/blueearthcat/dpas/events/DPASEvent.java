@@ -46,16 +46,14 @@ public class DPASEvent implements Listener {
         ItemStack item = e.getCurrentItem();
         if (NBT.hasTagKey(e.getCurrentItem(), "prev")) {
             e.setCancelled(true);
-            ItemStack[] currentPageItems = inv.getContents();
-            inv.setPageContent(inv.getCurrentPage(), currentPageItems);
+            inv.applyChanges()
             inv.prevPage();
             DPASFunction.updateCurrentPage(inv);
             return;
         }
         if (NBT.hasTagKey(e.getCurrentItem(), "next")) {
             e.setCancelled(true);
-            ItemStack[] currentPageItems = inv.getContents();
-            inv.setPageContent(inv.getCurrentPage(), currentPageItems);
+            inv.applyChanges()
             inv.nextPage();
             DPASFunction.updateCurrentPage(inv);
             return;
@@ -119,13 +117,11 @@ public class DPASEvent implements Listener {
         DInventory inv = (DInventory) e.getInventory().getHolder();
         if (!inv.isValidHandler(plugin)) return;
         if (inv.getChannel() == 0) {// item edit mode save
-            ItemStack[] currentPageItems = inv.getContents();
-            inv.setPageContent(inv.getCurrentPage(), currentPageItems);
+            inv.applyChanges()
             DPASFunction.saveShopItems((Player) e.getPlayer(), (String) inv.getObj(), inv);
         }
         if (inv.getChannel() == 2){
-            ItemStack[] currentPageItems = inv.getContents();
-            inv.setPageContent(inv.getCurrentPage(), currentPageItems);
+            inv.applyChanges()
             DPASFunction.savePriceItems((Player) e.getPlayer(), (String) inv.getObj(), inv);
         }
     }
