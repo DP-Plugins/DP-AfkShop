@@ -250,7 +250,6 @@ public class DPASFunction {
             }
             inv.setPageContent(page, itemList);
         }
-        inv.applyChanges();
         inv.update();
         updateCurrentPage(inv);
         p.openInventory(inv.getInventory());
