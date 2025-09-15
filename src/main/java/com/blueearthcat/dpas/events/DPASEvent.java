@@ -36,14 +36,13 @@ public class DPASEvent implements Listener {
         AfkShop.afkTime.remove(e.getPlayer().getUniqueId());
         AfkShop.afkTotalTime.remove(e.getPlayer().getUniqueId());
     }
+
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e) {
         Player p = (Player) e.getWhoClicked();
         if (!(e.getInventory().getHolder() instanceof DInventory)) return;
         DInventory inv = (DInventory) e.getInventory().getHolder();
         if (!inv.isValidHandler(plugin)) return;
-        if (e.getCurrentItem() == null) return;
-        ItemStack item = e.getCurrentItem();
         if (NBT.hasTagKey(e.getCurrentItem(), "prev")) {
             e.setCancelled(true);
             inv.applyChanges();
@@ -66,6 +65,11 @@ public class DPASEvent implements Listener {
             }
             return;
         }
+        ItemStack item = e.getCurrentItem();
+        if (item == null) {
+            e.setCancelled(true);
+            return;
+        }
         if (inv.getChannel() == 1) { //Item Open GUI
             e.setCancelled(true);
             if (e.getCurrentItem() == null || e.getCurrentItem().getType().isAir()) return;
@@ -82,7 +86,7 @@ public class DPASEvent implements Listener {
                     return;
                 }
                 removePoint(p, point);
-                p.getInventory().addItem(NBT.removeTag(transItem(item),"dpas_price"));
+                p.getInventory().addItem(NBT.removeTag(transItem(item), "dpas_price"));
                 p.sendMessage(getPrefix() + getLang().get("event_item_buy"));
             }
             if (e.getClick() == ClickType.SHIFT_RIGHT) {
@@ -97,12 +101,12 @@ public class DPASEvent implements Listener {
                     return;
                 }
                 removePoint(p, point);
-                p.getInventory().addItem(NBT.removeTag(transItem(item),"dpas_price"));
+                p.getInventory().addItem(NBT.removeTag(transItem(item), "dpas_price"));
                 p.sendMessage(getPrefix() + getLang().get("event_item_buy_64"));
             }
         }
         if (inv.getChannel() == 2) {//Item Price Setting
-            if (e.getSlot() > 44) return ;
+            if (e.getSlot() > 44) return;
             String name = (String) inv.getObj();
             e.setCancelled(true);
             DPASFunction.currentEditItem.put(p.getUniqueId(), Quadruple.of(name, item, e.getSlot(), inv.getCurrentPage()));
@@ -120,7 +124,7 @@ public class DPASEvent implements Listener {
             inv.applyChanges();
             DPASFunction.saveShopItems((Player) e.getPlayer(), (String) inv.getObj(), inv);
         }
-        if (inv.getChannel() == 2){
+        if (inv.getChannel() == 2) {
             inv.applyChanges();
             DPASFunction.savePriceItems((Player) e.getPlayer(), (String) inv.getObj(), inv);
         }
