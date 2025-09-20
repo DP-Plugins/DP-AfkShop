@@ -49,7 +49,6 @@ public class AfkData {
                             if (AfkShop.afkTime.containsKey(player.getUniqueId())) {
                                 int sec = AfkShop.afkTime.get(player.getUniqueId());
                                 if (sec > timeSchedule) {
-                                    System.out.println("Afk Check4: " + player.getName() + " " + sec + " | " + timeSchedule);
                                     givePoint(player, pointPerTime);
                                     AfkShop.afkTime.remove(player.getUniqueId());
                                 }
