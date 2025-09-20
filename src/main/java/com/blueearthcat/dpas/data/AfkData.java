@@ -21,7 +21,7 @@ public class AfkData {
 
 
     public AfkData() {
-        YamlConfiguration config = AfkShop.data.getConfig();
+        YamlConfiguration config = plugin.getConfig();
         timeSchedule = config.getInt("Settings.timeSchedule");
         pointPerTime = config.getInt("Settings.pointPerTime");
         ConfigurationSection worlds = config.getConfigurationSection("Settings.world-limit");
@@ -70,26 +70,26 @@ public class AfkData {
 
     public void addAfkLocation(Player p, String worldGuard, String worldName) {
         if (Bukkit.getWorld(worldName) == null) {
-            p.sendMessage(getPrefix() + getLang().get("afk_world_wrong"));
+            p.sendMessage(plugin.getPrefix() + plugin.getLang().get("afk_world_wrong"));
             return;
         }
         addAfkLocation(p, worldGuard, Bukkit.getWorld(worldName));
     }
 
     public void addAfkLocation(Player p, String worldGuard, World world) {
-        YamlConfiguration config = AfkShop.data.getConfig();
+        YamlConfiguration config = plugin.getConfig();
         if (!isExistWorld(world)) afkLocation.put(world, new ArrayList<>());
         if (isExistGuard(world, worldGuard)) {
-            p.sendMessage(getPrefix() + getLang().get("afk_location_exists"));
+            p.sendMessage(plugin.getPrefix() + plugin.getLang().get("afk_location_exists"));
             return;
         }
         List<String> guardList = afkLocation.get(world);
         guardList.add(worldGuard);
         afkLocation.put(world, guardList);
-        p.sendMessage(getPrefix() + getLang().getWithArgs("afk_location_add", world.getName(), worldGuard));
+        p.sendMessage(plugin.getPrefix() + plugin.getLang().getWithArgs("afk_location_add", world.getName(), worldGuard));
         config.set("Settings.world-limit." + world.getName(), guardList);
-        AfkShop.data.setConfig(config);
-        AfkShop.data.save();
+        plugin.setConfig(config);
+        plugin.saveDataContainer();
         initTaskAfk();
     }
 
@@ -99,39 +99,39 @@ public class AfkData {
 
     public void removeAfkLocation(Player p, String worldGuard, String worldName) {
         if (Bukkit.getWorld(worldName) == null) {
-            p.sendMessage(getPrefix() + getLang().get("afk_world_wrong"));
+            p.sendMessage(plugin.getPrefix() + plugin.getLang().get("afk_world_wrong"));
             return;
         }
         removeAfkLocation(p, worldGuard, Bukkit.getWorld(worldName));
     }
 
     public void removeAfkLocation(Player p, String worldGuard, World world) {
-        YamlConfiguration config = AfkShop.data.getConfig();
+        YamlConfiguration config = plugin.getConfig();
         if (!isExistWorld(world)) {
-            p.sendMessage(getPrefix() + getLang().get("afk_world_exists_not"));
+            p.sendMessage(plugin.getPrefix() + plugin.getLang().get("afk_world_exists_not"));
             return;
         }
         if (!isExistGuard(world, worldGuard)) {
-            p.sendMessage(getPrefix() + getLang().get("afk_location_exists_not"));
+            p.sendMessage(plugin.getPrefix() + plugin.getLang().get("afk_location_exists_not"));
             return;
         }
         List<String> guardList = afkLocation.get(world);
         guardList.remove(worldGuard);
         afkLocation.put(world, guardList);
-        p.sendMessage(getPrefix() + getLang().getWithArgs("afk_location_remove", world.getName(), worldGuard));
+        p.sendMessage(plugin.getPrefix() + plugin.getLang().getWithArgs("afk_location_remove", world.getName(), worldGuard));
         config.set("Settings.world-limit." + world.getName(), guardList);
-        AfkShop.data.setConfig(config);
-        AfkShop.data.save();
+        plugin.setConfig(config);
+        plugin.saveDataContainer();
         initTaskAfk();
     }
 
     public void setPointAndTime(CommandSender p, String t, String point) {
         if (t == null || !t.matches("\\d+([smh])?")) {
-            p.sendMessage(getPrefix() + getLang().get("afk_timeFormatException"));
+            p.sendMessage(plugin.getPrefix() + plugin.getLang().get("afk_timeFormatException"));
             return;
         }
         if (point == null || !point.matches("[0-9]+")) {
-            p.sendMessage(getPrefix() + getLang().get("afk_pointFormatException"));
+            p.sendMessage(plugin.getPrefix() + plugin.getLang().get("afk_pointFormatException"));
             return;
         }
         int time = Integer.parseInt(t.replaceAll("[^0-9]", ""));
@@ -151,12 +151,12 @@ public class AfkData {
                 break;
         }
         pointPerTime = Integer.parseInt(point);
-        YamlConfiguration config = data.getConfig();
+        YamlConfiguration config = plugin.getConfig();
         config.set("Settings.timeSchedule", timeSchedule);
         config.set("Settings.pointPerTime", pointPerTime);
-        AfkShop.data.setConfig(config);
-        AfkShop.data.save();
-        p.sendMessage(getPrefix() + getLang().getWithArgs("afk_set_point_time", String.valueOf(timeSchedule), String.valueOf(pointPerTime)));
+        plugin.setConfig(config);
+        plugin.saveDataContainer();
+        p.sendMessage(plugin.getPrefix() + plugin.getLang().getWithArgs("afk_set_point_time", String.valueOf(timeSchedule), String.valueOf(pointPerTime)));
         initTaskAfk();
     }
 
@@ -169,10 +169,10 @@ public class AfkData {
     }
 
     public void getAfkLocationList(Player p) {
-        p.sendMessage(getPrefix() + getLang().get("afk_see_wg_list"));
+        p.sendMessage(plugin.getPrefix() + plugin.getLang().get("afk_see_wg_list"));
         for (World world : afkLocation.keySet()) {
             for (String guard : afkLocation.get(world)) {
-                p.sendMessage(getPrefix() + world.getName() + ":" + guard);
+                p.sendMessage(plugin.getPrefix() + world.getName() + ":" + guard);
             }
         }
     }

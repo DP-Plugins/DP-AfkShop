@@ -28,13 +28,6 @@ import static com.blueearthcat.dpas.AfkShop.*;
 public class DPASFunction {
     public static final Map<UUID, Quadruple<String, ItemStack, Integer, Integer>> currentEditItem = new HashMap<>();
 
-    private static String getPrefix() {
-        return data.getPrefix();
-    }
-
-    private static DLang getLang() {
-        return data.getLang();
-    }
 
     public static void init() {
         List<YamlConfiguration> shops = ConfigUtils.loadCustomDataList(plugin, "shops");
@@ -61,11 +54,11 @@ public class DPASFunction {
                         }
                     }
                     if (str.equals("afkpoint")) {
-                        if (data.getUserData(p.getUniqueId()).getString("AfkPoint") == null) {
+                        if (udata.get(p.getUniqueId()).getString("AfkPoint") == null) {
                             clearPoint(p);
                             return "";
                         }
-                        return NumberFormat.getNumberInstance(Locale.US).format(data.getUserData(p.getUniqueId()).getInt("AfkPoint"));
+                        return NumberFormat.getNumberInstance(Locale.US).format(udata.get(p.getUniqueId()).getInt("AfkPoint"));
                     }
                     if (str.equals("afktime_HMS")) {
                         if (afkTotalTime.containsKey(p.getUniqueId())) {
@@ -115,7 +108,7 @@ public class DPASFunction {
 
     public static void createAfkShop(Player p, String name) {
         if (isShopExists(name)) {
-            p.sendMessage(getPrefix() + getLang().get("func_shop_exists"));
+            p.sendMessage(plugin.getPrefix() + plugin.getLang().get("func_shop_exists"));
             return;
         }
         YamlConfiguration shop = new YamlConfiguration();
@@ -123,7 +116,7 @@ public class DPASFunction {
         shop.set("Shop.MaxPage", 0);
         shops.put(name, shop);
         ConfigUtils.saveCustomData(plugin, shop, name, "shops");
-        p.sendMessage(getPrefix() + getLang().getWithArgs("func_shop_create", name));
+        p.sendMessage(plugin.getPrefix() + plugin.getLang().getWithArgs("func_shop_create", name));
     }
 
     public static boolean isShopExists(String name) {
@@ -132,20 +125,20 @@ public class DPASFunction {
 
     public static void deleteAfkShop(Player p, String name) {
         if (!isShopExists(name)) {
-            p.sendMessage(getPrefix() + getLang().get("func_shop_not_exists"));
+            p.sendMessage(plugin.getPrefix() + plugin.getLang().get("func_shop_not_exists"));
             return;
         }
         new File(plugin.getDataFolder() + "/shops/" + name + ".yml").delete();
         shops.remove(name);
-        p.sendMessage(getPrefix() + getLang().getWithArgs("func_shop_delete", name));
+        p.sendMessage(plugin.getPrefix() + plugin.getLang().getWithArgs("func_shop_delete", name));
     }
 
     public static void openItemSettingGUI(Player p, String name) {
         if (!isShopExists(name)) {
-            p.sendMessage(getPrefix() + getLang().get("func_shop_not_exists"));
+            p.sendMessage(plugin.getPrefix() + plugin.getLang().get("func_shop_not_exists"));
             return;
         }
-        String title = getLang().getWithArgs("func_shop_item_title", name);
+        String title = plugin.getLang().getWithArgs("func_shop_item_title", name);
         DInventory inv = new DInventory(title, 54, true, plugin);
         inv.setChannel(0);
         inv.setObj(name);
@@ -165,15 +158,15 @@ public class DPASFunction {
         YamlConfiguration shop = serialize(inv.getPageItemsWithoutTools(), shops.get(name));
         shops.put(name, shop);
         ConfigUtils.saveCustomData(plugin, shop, name, "shops");
-        player.sendMessage(getPrefix() + getLang().getWithArgs("func_shop_item_save", name));
+        player.sendMessage(plugin.getPrefix() + plugin.getLang().getWithArgs("func_shop_item_save", name));
     }
 
     public static void openAfkShop(Player p, String name) {
         if (!isShopExists(name)) {
-            p.sendMessage(getPrefix() + getLang().get("func_shop_not_exists"));
+            p.sendMessage(plugin.getPrefix() + plugin.getLang().get("func_shop_not_exists"));
             return;
         }
-        String title = getLang().getWithArgs("func_shop_open_title", name);
+        String title = plugin.getLang().getWithArgs("func_shop_open_title", name);
         DInventory inv = new DInventory(title, 54, true, plugin);
         inv.setChannel(1);
         YamlConfiguration shop = shops.get(name);
@@ -196,7 +189,7 @@ public class DPASFunction {
 
     public static void setPageAfkShop(Player p, String name, String page) {
         if (page == null || !page.matches("[0-9]+")) {
-            p.sendMessage(getPrefix() + getLang().get("func_pageFormatException"));
+            p.sendMessage(plugin.getPrefix() + plugin.getLang().get("func_pageFormatException"));
             return;
         }
         YamlConfiguration shop = shops.get(name);
@@ -204,7 +197,7 @@ public class DPASFunction {
         shop.set("Shop.MaxPage", maxPage);
         shops.put(name, shop);
         ConfigUtils.saveCustomData(plugin, shop, name, "shops");
-        p.sendMessage(getPrefix() + getLang().getWithArgs("func_shop_page_set", name));
+        p.sendMessage(plugin.getPrefix() + plugin.getLang().getWithArgs("func_shop_page_set", name));
     }
 
     public static void setItemLoreWithPrice(ItemStack item) {
@@ -216,23 +209,23 @@ public class DPASFunction {
             price = NBT.getIntegerTag(item, "dpas_price");
         }
         if (price <= 0) {
-            lore.add(getLang().get("func_shop_item_lore1") + getLang().get("func_shop_price_not_set"));
+            lore.add(plugin.getLang().get("func_shop_item_lore1") + plugin.getLang().get("func_shop_price_not_set"));
         } else {
-            lore.add(getLang().get("func_shop_item_lore1") + getLang().getWithArgs("func_shop_price_unit", NumberFormat.getNumberInstance(Locale.US).format(price)));
+            lore.add(plugin.getLang().get("func_shop_item_lore1") + plugin.getLang().getWithArgs("func_shop_price_unit", NumberFormat.getNumberInstance(Locale.US).format(price)));
         }
-        lore.add(getLang().get("func_shop_item_lore2"));
-        lore.add(getLang().get("func_shop_item_lore3"));
-        lore.add(getLang().get("func_shop_item_lore4"));
+        lore.add(plugin.getLang().get("func_shop_item_lore2"));
+        lore.add(plugin.getLang().get("func_shop_item_lore3"));
+        lore.add(plugin.getLang().get("func_shop_item_lore4"));
         im.setLore(lore);
         item.setItemMeta(im);
     }
 
     public static void openPriceSettingGUI(Player p, String name) {
         if (!isShopExists(name)) {
-            p.sendMessage(getPrefix() + getLang().get("func_shop_not_exists"));
+            p.sendMessage(plugin.getPrefix() + plugin.getLang().get("func_shop_not_exists"));
             return;
         }
-        String title = getLang().getWithArgs("func_shop_price_title", name);
+        String title = plugin.getLang().getWithArgs("func_shop_price_title", name);
 
         DInventory inv = new DInventory(title, 54, true, plugin);
         inv.setChannel(2);
@@ -257,10 +250,10 @@ public class DPASFunction {
 
     public static void openPriceSettingGUI(Player p, String name, ItemStack item2, int slot2, int page2) {
         if (!isShopExists(name)) {
-            p.sendMessage(getPrefix() + getLang().get("func_shop_not_exists"));
+            p.sendMessage(plugin.getPrefix() + plugin.getLang().get("func_shop_not_exists"));
             return;
         }
-        String title = getLang().getWithArgs("func_shop_price_title", name);
+        String title = plugin.getLang().getWithArgs("func_shop_price_title", name);
 
         DInventory inv = new DInventory(title, 54, true, plugin);
         inv.setChannel(2);
@@ -335,15 +328,15 @@ public class DPASFunction {
         ItemStack pane = NBT.setStringTag(new ItemStack(Material.BLACK_STAINED_GLASS_PANE), "pane", "true");
 
         ItemMeta im = prev.getItemMeta();
-        im.setDisplayName(getLang().get("prev_page"));
+        im.setDisplayName(plugin.getLang().get("prev_page"));
         prev.setItemMeta(im);
 
         im = next.getItemMeta();
-        im.setDisplayName(getLang().get("next_page"));
+        im.setDisplayName(plugin.getLang().get("next_page"));
         next.setItemMeta(im);
 
         im = current.getItemMeta();
-        im.setDisplayName(getLang().get("current_page") + (inv.getCurrentPage() + 1) + "/" + (inv.getPages() + 1));
+        im.setDisplayName(plugin.getLang().get("current_page") + (inv.getCurrentPage() + 1) + "/" + (inv.getPages() + 1));
         current.setItemMeta(im);
 
         im = pane.getItemMeta();
@@ -356,7 +349,7 @@ public class DPASFunction {
         ItemStack[] tools = inv.getPageTools();
         ItemStack cpage = tools[4];
         ItemMeta im = cpage.getItemMeta();
-        im.setDisplayName(getLang().get("current_page") + (inv.getCurrentPage() + 1) + "/" + (inv.getPages() + 1));
+        im.setDisplayName(plugin.getLang().get("current_page") + (inv.getCurrentPage() + 1) + "/" + (inv.getPages() + 1));
         cpage.setItemMeta(im);
         inv.setPageTools(tools);
         inv.update();
@@ -364,7 +357,7 @@ public class DPASFunction {
 
     public static ItemStack setPrice(Player p, ItemStack b, String price) {
         if (price == null || !price.matches("[0-9]+")) {
-            p.sendMessage(getPrefix() + getLang().get("func_priceFormatException"));
+            p.sendMessage(plugin.getPrefix() + plugin.getLang().get("func_priceFormatException"));
             return b;
         }
         return NBT.setIntTag(b, "dpas_price", Integer.parseInt(price));
@@ -393,89 +386,82 @@ public class DPASFunction {
     public static void pointSetting(CommandSender p, String arg, String po, Player receiver) {
         if (arg.equalsIgnoreCase("clear")) {
             clearPoint(receiver, p);
-            p.sendMessage(getPrefix() + getLang().get("afk_clear_success"));
+            p.sendMessage(plugin.getPrefix() + plugin.getLang().get("afk_clear_success"));
             return;
         }
         if (po == null || !po.matches("[0-9]+")) {
-            p.sendMessage(getPrefix() + getLang().get("afk_pointFormatException"));
+            p.sendMessage(plugin.getPrefix() + plugin.getLang().get("afk_pointFormatException"));
             return;
         }
         int point = Integer.parseInt(po);
         if (arg.equalsIgnoreCase("set")) setPoint(receiver, point, p);
         else if (arg.equalsIgnoreCase("give")) givePoint(receiver, point, p);
         else if (arg.equalsIgnoreCase("take")) removePoint(receiver, point, p);
-        else p.sendMessage(getPrefix() + getLang().get("cmd_point"));
+        else p.sendMessage(plugin.getPrefix() + plugin.getLang().get("cmd_point"));
     }
 
     public static void givePoint(Player player, int point) {
-        YamlConfiguration data = AfkShop.data.getUserData(player.getUniqueId());
+        YamlConfiguration data = AfkShop.udata.get(player.getUniqueId());
         int current = data.getInt("AfkPoint");
         data.set("AfkPoint", current + point);
-        AfkShop.data.saveUserData(player.getUniqueId());
-        player.sendMessage(getPrefix() + getLang().getWithArgs("player_get_point", NumberFormat.getNumberInstance(Locale.US).format(point)));
+        player.sendMessage(plugin.getPrefix() + plugin.getLang().getWithArgs("player_get_point", NumberFormat.getNumberInstance(Locale.US).format(point)));
     }
 
     public static void givePoint(Player player, int point, CommandSender p) {
-        YamlConfiguration data = AfkShop.data.getUserData(player.getUniqueId());
+        YamlConfiguration data = AfkShop.udata.get(player.getUniqueId());
         int current = data.getInt("AfkPoint");
         data.set("AfkPoint", current + point);
-        AfkShop.data.saveUserData(player.getUniqueId());
-        player.sendMessage(getPrefix() + getLang().getWithArgs("player_get_point", NumberFormat.getNumberInstance(Locale.US).format(point)));
-        p.sendMessage(getPrefix() + getLang().getWithArgs("player_give_point", NumberFormat.getNumberInstance(Locale.US).format(point)));
+        player.sendMessage(plugin.getPrefix() + plugin.getLang().getWithArgs("player_get_point", NumberFormat.getNumberInstance(Locale.US).format(point)));
+        p.sendMessage(plugin.getPrefix() + plugin.getLang().getWithArgs("player_give_point", NumberFormat.getNumberInstance(Locale.US).format(point)));
     }
 
     public static void setPoint(Player player, int point, CommandSender p) {
         if (point < 0) {
-            player.sendMessage(getPrefix() + getLang().get("afk_wrong_set"));
+            player.sendMessage(plugin.getPrefix() + plugin.getLang().get("afk_wrong_set"));
             return;
         }
-        YamlConfiguration data = AfkShop.data.getUserData(player.getUniqueId());
+        YamlConfiguration data = AfkShop.udata.get(player.getUniqueId());
         data.set("AfkPoint", point);
-        AfkShop.data.saveUserData(player.getUniqueId());
-        player.sendMessage(getPrefix() + getLang().getWithArgs("player_set_point", NumberFormat.getNumberInstance(Locale.US).format(point)));
-        p.sendMessage(getPrefix() + getLang().getWithArgs("player_set_point_player", NumberFormat.getNumberInstance(Locale.US).format(point)));
+        player.sendMessage(plugin.getPrefix() + plugin.getLang().getWithArgs("player_set_point", NumberFormat.getNumberInstance(Locale.US).format(point)));
+        p.sendMessage(plugin.getPrefix() + plugin.getLang().getWithArgs("player_set_point_player", NumberFormat.getNumberInstance(Locale.US).format(point)));
     }
 
     public static void removePoint(Player player, int point) {
         if (hasPoint(player, point)) {
-            player.sendMessage(getPrefix() + getLang().get("afk_no_point"));
+            player.sendMessage(plugin.getPrefix() + plugin.getLang().get("afk_no_point"));
             return;
         }
-        YamlConfiguration data = AfkShop.data.getUserData(player.getUniqueId());
+        YamlConfiguration data = AfkShop.udata.get(player.getUniqueId());
         int current = data.getInt("AfkPoint");
         data.set("AfkPoint", current - point);
-        AfkShop.data.saveUserData(player.getUniqueId());
-        player.sendMessage(getPrefix() + getLang().getWithArgs("player_take_point", NumberFormat.getNumberInstance(Locale.US).format(point)));
+        player.sendMessage(plugin.getPrefix() + plugin.getLang().getWithArgs("player_take_point", NumberFormat.getNumberInstance(Locale.US).format(point)));
     }
 
     public static void removePoint(Player player, int point, CommandSender p) {
         if (hasPoint(player, point)) {
-            player.sendMessage(getPrefix() + getLang().get("afk_no_point"));
+            player.sendMessage(plugin.getPrefix() + plugin.getLang().get("afk_no_point"));
             return;
         }
-        YamlConfiguration data = AfkShop.data.getUserData(player.getUniqueId());
+        YamlConfiguration data = AfkShop.udata.get(player.getUniqueId());
         int current = data.getInt("AfkPoint");
         data.set("AfkPoint", current - point);
-        AfkShop.data.saveUserData(player.getUniqueId());
-        player.sendMessage(getPrefix() + getLang().getWithArgs("player_take_point", NumberFormat.getNumberInstance(Locale.US).format(point)));
-        p.sendMessage(getPrefix() + getLang().getWithArgs("player_take_point_player", NumberFormat.getNumberInstance(Locale.US).format(point)));
+        player.sendMessage(plugin.getPrefix() + plugin.getLang().getWithArgs("player_take_point", NumberFormat.getNumberInstance(Locale.US).format(point)));
+        p.sendMessage(plugin.getPrefix() + plugin.getLang().getWithArgs("player_take_point_player", NumberFormat.getNumberInstance(Locale.US).format(point)));
     }
 
     public static void clearPoint(Player player) {
-        YamlConfiguration data = AfkShop.data.getUserData(player.getUniqueId());
+        YamlConfiguration data = AfkShop.udata.get(player.getUniqueId());
         data.set("AfkPoint", 0);
-        AfkShop.data.saveUserData(player.getUniqueId());
     }
 
     public static void clearPoint(Player player, CommandSender c) {
-        YamlConfiguration data = AfkShop.data.getUserData(player.getUniqueId());
+        YamlConfiguration data = AfkShop.udata.get(player.getUniqueId());
         data.set("AfkPoint", 0);
-        AfkShop.data.saveUserData(player.getUniqueId());
-        c.sendMessage(getPrefix() + getLang().get("player_clear_point"));
+        c.sendMessage(plugin.getPrefix() + plugin.getLang().get("player_clear_point"));
     }
 
     public static boolean hasPoint(Player player, int point) {
-        YamlConfiguration data = AfkShop.data.getUserData(player.getUniqueId());
+        YamlConfiguration data = AfkShop.udata.get(player.getUniqueId());
         int playerPoint = data.getInt("AfkPoint");
         return point > playerPoint;
     }
@@ -492,6 +478,6 @@ public class DPASFunction {
         YamlConfiguration shop = serialize(inv.getPageItemsWithoutTools(), shops.get(name));
         shops.put(name, shop);
         ConfigUtils.saveCustomData(plugin, shop, name, "shops");
-        player.sendMessage(getPrefix() + getLang().getWithArgs("func_shop_item_save", name));
+        player.sendMessage(plugin.getPrefix() + plugin.getLang().getWithArgs("func_shop_item_save", name));
     }
 }
