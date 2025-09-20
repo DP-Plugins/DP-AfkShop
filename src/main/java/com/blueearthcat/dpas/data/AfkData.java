@@ -48,7 +48,7 @@ public class AfkData {
                             if (pointPerTime == -1) return;
                             if (AfkShop.afkTime.containsKey(player.getUniqueId())) {
                                 int sec = AfkShop.afkTime.get(player.getUniqueId());
-                                if (sec > timeSchedule) {
+                                if (sec >= timeSchedule) {
                                     givePoint(player, pointPerTime);
                                     AfkShop.afkTime.remove(player.getUniqueId());
                                 }
