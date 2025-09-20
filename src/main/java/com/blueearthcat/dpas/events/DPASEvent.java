@@ -16,8 +16,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 
-import static com.blueearthcat.dpas.AfkShop.getLang;
-import static com.blueearthcat.dpas.AfkShop.getPrefix;
 import static com.blueearthcat.dpas.functions.DPASFunction.*;
 
 public class DPASEvent implements Listener {
@@ -25,14 +23,13 @@ public class DPASEvent implements Listener {
 
     @EventHandler
     public void onJoin(final PlayerJoinEvent e) {
-        AfkShop.data.addUserData(e.getPlayer().getUniqueId(), ConfigUtils.initUserData(plugin, e.getPlayer().getUniqueId().toString(), "udata"));
-        ConfigUtils.saveCustomData(plugin, AfkShop.data.getUserData(e.getPlayer().getUniqueId()), e.getPlayer().getUniqueId().toString(), "udata");
+        AfkShop.udata.put(e.getPlayer().getUniqueId().toString(), ConfigUtils.initUserData(plugin, e.getPlayer().getUniqueId().toString(), "udata"));
+        plugin.saveDataContainer();
     }
 
     @EventHandler
     public void onQuit(final PlayerQuitEvent e) {
-        ConfigUtils.saveCustomData(plugin, AfkShop.data.getUserData(e.getPlayer().getUniqueId()), e.getPlayer().getUniqueId().toString(), "udata");
-        AfkShop.data.removeUserData(e.getPlayer().getUniqueId());
+        plugin.saveDataContainer();
         AfkShop.afkTime.remove(e.getPlayer().getUniqueId());
         AfkShop.afkTotalTime.remove(e.getPlayer().getUniqueId());
     }
@@ -78,31 +75,31 @@ public class DPASEvent implements Listener {
             item = item.clone();
             if (e.getClick() == ClickType.RIGHT) {
                 if (hasPoint(p, point)) {
-                    p.sendMessage(getPrefix() + getLang().get("afk_no_point"));
+                    p.sendMessage(plugin.getPrefix() + plugin.getLang().get("afk_no_point"));
                     return;
                 }
                 if (!InventoryUtils.hasEnoughSpace(p.getInventory().getStorageContents(), transItem(item))) {
-                    p.sendMessage(getPrefix() + getLang().get("player_has_no_space"));
+                    p.sendMessage(plugin.getPrefix() + plugin.getLang().get("player_has_no_space"));
                     return;
                 }
                 removePoint(p, point);
                 p.getInventory().addItem(NBT.removeTag(transItem(item), "dpas_price"));
-                p.sendMessage(getPrefix() + getLang().get("event_item_buy"));
+                p.sendMessage(plugin.getPrefix() + plugin.getLang().get("event_item_buy"));
             }
             if (e.getClick() == ClickType.SHIFT_RIGHT) {
                 point *= item.getMaxStackSize();
                 if (hasPoint(p, point)) {
-                    p.sendMessage(getPrefix() + getLang().get("afk_no_point"));
+                    p.sendMessage(plugin.getPrefix() + plugin.getLang().get("afk_no_point"));
                     return;
                 }
                 item.setAmount(item.getMaxStackSize());
                 if (!InventoryUtils.hasEnoughSpace(p.getInventory().getStorageContents(), transItem(item))) {
-                    p.sendMessage(getPrefix() + getLang().get("player_has_no_space"));
+                    p.sendMessage(plugin.getPrefix() + plugin.getLang().get("player_has_no_space"));
                     return;
                 }
                 removePoint(p, point);
                 p.getInventory().addItem(NBT.removeTag(transItem(item), "dpas_price"));
-                p.sendMessage(getPrefix() + getLang().get("event_item_buy_64"));
+                p.sendMessage(plugin.getPrefix() + plugin.getLang().get("event_item_buy_64"));
             }
         }
         if (inv.getChannel() == 2) {//Item Price Setting
@@ -111,7 +108,7 @@ public class DPASEvent implements Listener {
             e.setCancelled(true);
             DPASFunction.currentEditItem.put(p.getUniqueId(), Quadruple.of(name, item, e.getSlot(), inv.getCurrentPage()));
             p.closeInventory();
-            p.sendMessage(getPrefix() + getLang().get("event_shop_price_set"));
+            p.sendMessage(plugin.getPrefix() + plugin.getLang().get("event_shop_price_set"));
         }
     }
 
