@@ -46,11 +46,12 @@ public class AfkData {
                     for (String guard : afkLocation.get(world)) {
                         if (WorldGuardAPI.isPlayerInRegion(player, guard)) {
                             if (pointPerTime == -1) return;
-                            if (plugin.afkTime.containsKey(player.getUniqueId())) {
-                                int sec = plugin.afkTime.get(player.getUniqueId());
+                            if (AfkShop.afkTime.containsKey(player.getUniqueId())) {
+                                int sec = AfkShop.afkTime.get(player.getUniqueId());
                                 if (sec > timeSchedule) {
+                                    System.out.println("Afk Check4: " + player.getName() + " " + sec + " | " + timeSchedule);
                                     givePoint(player, pointPerTime);
-                                    plugin.afkTime.remove(player.getUniqueId());
+                                    AfkShop.afkTime.remove(player.getUniqueId());
                                 }
                             }
                         }

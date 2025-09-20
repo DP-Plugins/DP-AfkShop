@@ -22,45 +22,39 @@ public class DPAfkShopCommand {
             if (args.length == 2) {
                 DPASFunction.createAfkShop((Player) p, args[1]);
                 return true;
-            }
-            else return false;
+            } else return false;
         });
         builder.addSubCommand("open", "dpas.open", plugin.getLang().get("cmd_open"), true, (p, args) -> {
             if (args.length == 2) {
                 DPASFunction.openAfkShop((Player) p, args[1]);
                 return true;
-            }
-            else return false;
+            } else return false;
         });
         builder.addSubCommand("delete", "dpas.delete", plugin.getLang().get("cmd_delete"), true, (p, args) -> {
-            if (args.length == 2){
+            if (args.length == 2) {
                 DPASFunction.deleteAfkShop((Player) p, args[1]);
                 return true;
-            }
-            else return false;
+            } else return false;
         });
         builder.addSubCommand("items", "dpas.items", plugin.getLang().get("cmd_items"), true, (p, args) -> {
             if (args.length == 2) {
                 DPASFunction.openItemSettingGUI((Player) p, args[1]);
                 return true;
-            }
-            else return false;
+            } else return false;
         });
         builder.addSubCommand("price", "dpas.price", plugin.getLang().get("cmd_price"), true, (p, args) -> {
             if (args.length == 2) {
                 DPASFunction.openPriceSettingGUI((Player) p, args[1]);
                 return true;
-            }
-            else return false;
+            } else return false;
         });
         builder.addSubCommand("page", "dpas.page", plugin.getLang().get("cmd_page"), true, (p, args) -> {
             if (args.length == 3) {
                 DPASFunction.setPageAfkShop((Player) p, args[1], args[2]);
                 return true;
-            }
-            else return false;
+            } else return false;
         });
-        List<String> commands = Arrays.asList("create", "open", "delete", "items", "price", "page");
+        List<String> commands = Arrays.asList("open", "delete", "items", "price", "page");
         for (String c : commands) {
             builder.addTabCompletion(c, args -> {
                 if (args.length == 2) return new ArrayList<>(AfkShop.shops.keySet());

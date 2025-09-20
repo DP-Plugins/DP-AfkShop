@@ -40,7 +40,7 @@ public class AfkShop extends DPlugin {
     public void onLoad() {
         init();
         DPASFunction.placeholderInit();
-        shops = loadDataContainer(new DataContainer<String, YamlConfiguration>(this, DataType.CUSTOM, "shops"), null);
+        shops = loadDataContainer(new DataContainer<String, YamlConfiguration>(this, DataType.YAML, "shops"), null);
         udata = loadDataContainer(new DataContainer<String, YamlConfiguration>(this, DataType.USER, "udata"), null);
         PluginUtil.addPlugin(plugin, 26098);
     }
@@ -50,7 +50,7 @@ public class AfkShop extends DPlugin {
         DPASFunction.init();
         plugin.getServer().getPluginManager().registerEvents(new DPASEvent(), plugin);
         getCommand("dpafk").setExecutor(new DPAfkCommand().getExecutor());
-        getCommand("dpafkshop").setExecutor( new DPAfkShopCommand().getExecutor());
+        getCommand("dpafkshop").setExecutor(new DPAfkShopCommand().getExecutor());
     }
 
     @Override
