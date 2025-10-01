@@ -41,7 +41,7 @@ public class AfkShop extends DPlugin {
         init();
         DPASFunction.placeholderInit();
         shops = loadDataContainer(new DataContainer<String, YamlConfiguration>(this, DataType.YAML, "shops"), null);
-        udata = loadDataContainer(new DataContainer<String, YamlConfiguration>(this, DataType.USER, "udata"), null);
+        udata = loadDataContainer(new DataContainer<String, YamlConfiguration>(this, DataType.YAML, "udata"), null);
         PluginUtil.addPlugin(plugin, 26098);
     }
 
