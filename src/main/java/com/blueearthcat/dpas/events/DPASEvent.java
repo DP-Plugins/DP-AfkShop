@@ -12,7 +12,6 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -20,12 +19,6 @@ import static com.blueearthcat.dpas.functions.DPASFunction.*;
 
 public class DPASEvent implements Listener {
     private static final AfkShop plugin = AfkShop.getInstance();
-
-    @EventHandler
-    public void onJoin(final PlayerJoinEvent e) {
-        AfkShop.udata.put(e.getPlayer().getUniqueId().toString(), ConfigUtils.initUserData(plugin, e.getPlayer().getUniqueId().toString(), "udata"));
-        plugin.saveDataContainer();
-    }
 
     @EventHandler
     public void onQuit(final PlayerQuitEvent e) {
