@@ -18,17 +18,24 @@ import java.util.UUID;
 
 public class AfkShop extends DPlugin {
     public static AfkShop plugin;
+    // AFK 장소 및 포인트 관련 데이터
     public static AfkData afkData;
+    // 상점 데이터
     public static DataContainer<String, YamlConfiguration> shops;
+    // 유저별 데이터
     public static DataContainer<String, YamlConfiguration> udata;
+    // 전역 작업 스케줄러
     public static BukkitTask globalTask;
+    // 잠수 시간 추적 (초 단위)
     public static Map<UUID, Integer> afkTime = new HashMap<>();
+    // 총 잠수 시간 추적 (초 단위)
     public static Map<UUID, Integer> afkTotalTime = new HashMap<>();
 
     public static AfkShop getInstance() {
         return plugin;
     }
 
+    // 상점 관련 전역 작업 스케줄러
     public static BukkitTask task;
 
     public AfkShop() {
