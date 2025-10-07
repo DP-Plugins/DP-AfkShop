@@ -2,6 +2,7 @@ package com.blueearthcat.dpas;
 
 import com.blueearthcat.dpas.commands.DPAfkCommand;
 import com.blueearthcat.dpas.commands.DPAfkShopCommand;
+import com.blueearthcat.dpas.data.AFKUser;
 import com.blueearthcat.dpas.data.AfkData;
 import com.blueearthcat.dpas.events.DPASEvent;
 import com.blueearthcat.dpas.functions.DPASFunction;
@@ -23,7 +24,8 @@ public class AfkShop extends DPlugin {
     // 상점 데이터
     public static DataContainer<String, YamlConfiguration> shops;
     // 유저별 데이터
-    public static DataContainer<String, YamlConfiguration> udata;
+//    public static DataContainer<String, YamlConfiguration> udata;
+    public static DataContainer<UUID, AFKUser> afkuser;
     // 전역 작업 스케줄러
     public static BukkitTask globalTask;
     // 잠수 시간 추적 (초 단위)
@@ -46,10 +48,10 @@ public class AfkShop extends DPlugin {
 
     @Override
     public void onLoad() {
-
         DPASFunction.placeholderInit();
         shops = loadDataContainer(new DataContainer<>(this, DataType.YAML, "shops"));
-        udata = loadDataContainer(new DataContainer<>(this, DataType.YAML, "udata"));
+        afkuser = loadDataContainer(new DataContainer<>(this, DataType.USER, "afkuser"));
+//        udata = loadDataContainer(new DataContainer<>(this, DataType.YAML, "udata"));
         PluginUtil.addPlugin(plugin, 26098);
     }
 
