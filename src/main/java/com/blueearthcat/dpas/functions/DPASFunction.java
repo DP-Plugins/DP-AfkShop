@@ -1,6 +1,7 @@
 package com.blueearthcat.dpas.functions;
 
 import com.blueearthcat.dpas.AfkShop;
+import com.blueearthcat.dpas.data.AFKUser;
 import com.blueearthcat.dpas.data.AfkData;
 import com.darksoldier1404.dppc.api.inventory.DInventory;
 import com.darksoldier1404.dppc.api.placeholder.PlaceholderBuilder;
@@ -54,11 +55,10 @@ public class DPASFunction {
                         }
                     }
                     if (str.equals("afkpoint")) {
-                        if (udata.get(p.getUniqueId().toString()).getString("AfkPoint") == null) {
-                            clearPoint(p);
-                            return "";
+                        if (afkuser.get(p.getUniqueId()) == null) {
+                            return "0";
                         }
-                        return NumberFormat.getNumberInstance(Locale.US).format(udata.get(p.getUniqueId().toString()).getInt("AfkPoint"));
+                        return String.valueOf(AfkShop.afkuser.get(p.getUniqueId()).getPoint());
                     }
                     if (str.equals("afktime_HMS")) {
                         if (afkTotalTime.containsKey(p.getUniqueId())) {
@@ -407,20 +407,24 @@ public class DPASFunction {
     }
 
     public static void givePoint(Player player, int point) {
-        YamlConfiguration data = AfkShop.udata.get(player.getUniqueId().toString());
-        int current = data.getInt("AfkPoint");
-        data.set("AfkPoint", current + point);
+        AFKUser user = afkuser.get(player.getUniqueId());
+        if (user == null) {
+            user = new AFKUser(0, 0);
+        }
+        user.setPoint(user.getPoint() + point);
+        afkuser.put(player.getUniqueId(), user);
         player.sendMessage(plugin.getPrefix() + plugin.getLang().getWithArgs("player_get_point", NumberFormat.getNumberInstance(Locale.US).format(point)));
-        AfkShop.udata.put(player.getUniqueId().toString(), data);
     }
 
     public static void givePoint(Player player, int point, CommandSender p) {
-        YamlConfiguration data = AfkShop.udata.get(player.getUniqueId().toString());
-        int current = data.getInt("AfkPoint");
-        data.set("AfkPoint", current + point);
+        AFKUser user = afkuser.get(player.getUniqueId());
+        if (user == null) {
+            user = new AFKUser(0, 0);
+        }
+        user.setPoint(user.getPoint() + point);
+        afkuser.put(player.getUniqueId(), user);
         player.sendMessage(plugin.getPrefix() + plugin.getLang().getWithArgs("player_get_point", NumberFormat.getNumberInstance(Locale.US).format(point)));
         p.sendMessage(plugin.getPrefix() + plugin.getLang().getWithArgs("player_give_point", NumberFormat.getNumberInstance(Locale.US).format(point)));
-        AfkShop.udata.put(player.getUniqueId().toString(), data);
     }
 
     public static void setPoint(Player player, int point, CommandSender p) {
@@ -428,11 +432,14 @@ public class DPASFunction {
             player.sendMessage(plugin.getPrefix() + plugin.getLang().get("afk_wrong_set"));
             return;
         }
-        YamlConfiguration data = AfkShop.udata.get(player.getUniqueId().toString());
-        data.set("AfkPoint", point);
+        AFKUser user = afkuser.get(player.getUniqueId());
+        if (user == null) {
+            user = new AFKUser(0, 0);
+        }
+        user.setPoint(point);
+        afkuser.put(player.getUniqueId(), user);
         player.sendMessage(plugin.getPrefix() + plugin.getLang().getWithArgs("player_set_point", NumberFormat.getNumberInstance(Locale.US).format(point)));
         p.sendMessage(plugin.getPrefix() + plugin.getLang().getWithArgs("player_set_point_player", NumberFormat.getNumberInstance(Locale.US).format(point)));
-        AfkShop.udata.put(player.getUniqueId().toString(), data);
     }
 
     public static void removePoint(Player player, int point) {
@@ -440,11 +447,17 @@ public class DPASFunction {
             player.sendMessage(plugin.getPrefix() + plugin.getLang().get("afk_no_point"));
             return;
         }
-        YamlConfiguration data = AfkShop.udata.get(player.getUniqueId().toString());
-        int current = data.getInt("AfkPoint");
-        data.set("AfkPoint", current - point);
+        AFKUser user = afkuser.get(player.getUniqueId());
+        if (user == null) {
+            user = new AFKUser(0, 0);
+        }
+        if (user.getPoint() - point < 0) {
+            user.setPoint(0);
+        } else {
+            user.setPoint(user.getPoint() - point);
+        }
+        afkuser.put(player.getUniqueId(), user);
         player.sendMessage(plugin.getPrefix() + plugin.getLang().getWithArgs("player_take_point", NumberFormat.getNumberInstance(Locale.US).format(point)));
-        AfkShop.udata.put(player.getUniqueId().toString(), data);
     }
 
     public static void removePoint(Player player, int point, CommandSender p) {
@@ -452,30 +465,46 @@ public class DPASFunction {
             player.sendMessage(plugin.getPrefix() + plugin.getLang().get("afk_no_point"));
             return;
         }
-        YamlConfiguration data = AfkShop.udata.get(player.getUniqueId().toString());
-        int current = data.getInt("AfkPoint");
-        data.set("AfkPoint", current - point);
+        AFKUser user = afkuser.get(player.getUniqueId());
+        if (user == null) {
+            user = new AFKUser(0, 0);
+        }
+        if (user.getPoint() - point < 0) {
+            user.setPoint(0);
+        } else {
+            user.setPoint(user.getPoint() - point);
+        }
+        afkuser.put(player.getUniqueId(), user);
         player.sendMessage(plugin.getPrefix() + plugin.getLang().getWithArgs("player_take_point", NumberFormat.getNumberInstance(Locale.US).format(point)));
         p.sendMessage(plugin.getPrefix() + plugin.getLang().getWithArgs("player_take_point_player", NumberFormat.getNumberInstance(Locale.US).format(point)));
-        AfkShop.udata.put(player.getUniqueId().toString(), data);
     }
 
     public static void clearPoint(Player player) {
-        YamlConfiguration data = AfkShop.udata.get(player.getUniqueId().toString());
-        data.set("AfkPoint", 0);
-        AfkShop.udata.put(player.getUniqueId().toString(), data);
+        AFKUser user = afkuser.get(player.getUniqueId());
+        if (user == null) {
+            user = new AFKUser(0, 0);
+        }
+        user.setPoint(0);
+        afkuser.put(player.getUniqueId(), user);
+        player.sendMessage(plugin.getPrefix() + plugin.getLang().get("player_clear_point"));
     }
 
     public static void clearPoint(Player player, CommandSender c) {
-        YamlConfiguration data = AfkShop.udata.get(player.getUniqueId().toString());
-        data.set("AfkPoint", 0);
+        AFKUser user = afkuser.get(player.getUniqueId());
+        if (user == null) {
+            user = new AFKUser(0, 0);
+        }
+        user.setPoint(0);
+        afkuser.put(player.getUniqueId(), user);
         c.sendMessage(plugin.getPrefix() + plugin.getLang().get("player_clear_point"));
-        AfkShop.udata.put(player.getUniqueId().toString(), data);
     }
 
     public static boolean hasPoint(Player player, int point) {
-        YamlConfiguration data = AfkShop.udata.get(player.getUniqueId().toString());
-        int playerPoint = data.getInt("AfkPoint");
+        AFKUser user = afkuser.get(player.getUniqueId());
+        if (user == null) {
+            user = new AFKUser(0, 0);
+        }
+        int playerPoint = user.getPoint();
         return point > playerPoint;
     }
 
